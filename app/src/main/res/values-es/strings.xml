@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="toolbar_title">Iniciar sesión</string>
     <string name="app_name">E2_T5_MOB</string>
     <string name="login_title">Iniciar sesión</string>
     <string name="username">Nombre de usuario</string>

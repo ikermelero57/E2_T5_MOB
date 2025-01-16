@@ -6,7 +6,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
@@ -16,6 +18,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
 
         // Encuentra la ImageView donde mostrarás el GIF
         ImageView splashImage = findViewById(R.id.splashImage);
@@ -35,6 +39,6 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         finish();
                     }
-                }, 3000); // 3 segundos de duración
+                }, 4000); // 3 segundos de duración
     }
 }

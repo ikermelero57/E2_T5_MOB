@@ -5,4 +5,5 @@
     <color name="light_gray">#CCCCCC</color>  <!-- Gris claro -->
     <color name="red_orange">#185CAB</color>  <!-- Rojo anaranjado -->
     <color name="white">#FFFFFF</color>  <!-- Blanco -->
+    <color name="transparent">#00000000</color>
 </resources>

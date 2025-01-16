@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">E2_T5_MOB</string>
+    <string name="toolbar_title">Saioa hasi</string>
     <string name="login_title">Saioa hasi</string>
     <string name="username">Erabiltzaile izena</string>
     <string name="password">Pasahitza</string>
     <string name="login_button">Saioa hasi</string>
+    <string name="irakasle_title">Irakasle Ordutegia</string>
 </resources>

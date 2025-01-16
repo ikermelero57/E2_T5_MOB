@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Tema principal de la aplicación -->
     <style name="Theme.AppName" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="windowActionBar">false</item> <!-- Desactiva el ActionBar -->
+        <item name="windowNoTitle">true</item> <!-- Desactiva el título de la ventana -->
         <item name="colorPrimary">@color/red_orange</item>  <!-- Usar el rojo-anaranjado -->
         <item name="colorPrimaryVariant">@color/black</item>  <!-- Usar el negro -->
         <item name="colorOnPrimary">@color/white</item>  <!-- Texto blanco sobre fondo rojo-anaranjado -->
