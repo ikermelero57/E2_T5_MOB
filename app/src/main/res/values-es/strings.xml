@@ -6,4 +6,6 @@
     <string name="username">Nombre de usuario</string>
     <string name="password">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>
+    <string name="irakasle_title">Horario de Profesor</string>
+    <string name="ordutegia_title">Horario</string>
 </resources>

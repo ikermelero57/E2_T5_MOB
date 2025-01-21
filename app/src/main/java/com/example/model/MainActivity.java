@@ -1,7 +1,9 @@
-package com.example.e2_t5_mob;
+package com.example.model;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -11,9 +13,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.e2_t5_mob.R;
+
 import java.util.Locale;
 
+import model.Users;
+
 public class MainActivity extends AppCompatActivity {
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Mostrar el cuadro de diálogo de selección de idioma cada vez que se inicie la aplicación
         showLanguageSelectionDialog();
+
+
+
     }
 
     // Mostrar el cuadro de diálogo de selección de idioma
@@ -63,8 +76,16 @@ public class MainActivity extends AppCompatActivity {
         // Configurar el diseño principal
         setContentView(R.layout.activity_main);
 
+        // Inicializar los elementos de la UI
+        emailEditText = findViewById(R.id.editTextUsername);
+        passwordEditText = findViewById(R.id.editTextPassword);
+        loginButton = findViewById(R.id.buttonLogin);
+
+        emailEditText.setText("1");
+        passwordEditText.setText("1234");
+
         // Actualizar el título del Toolbar con la cadena traducida
-        getSupportActionBar().setTitle(getString(R.string.toolbar_title));  // Usa el string traducido
+        getSupportActionBar().setTitle(getString(R.string.toolbar_title));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -75,11 +96,38 @@ public class MainActivity extends AppCompatActivity {
         // Verificar la conexión a Internet y mostrar mensaje
         if (!NetworkUtils.isNetworkAvailable(this)) {
             Toast.makeText(this, "No hay conexión a Internet. Por favor, conecta tu dispositivo.", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Conexión a Internet disponible", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Configurar el botón de login
+        loginButton.setOnClickListener(view -> {
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Llamada al método login
+            ServerConnection.login(email, password, new ServerConnection.ServerResponse<Users>() {
+                @Override
+                public void onSuccess(Users users) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Bienvenido, " + users.getNombre(), Toast.LENGTH_SHORT).show();
+                        // Aquí puedes iniciar una nueva actividad si lo deseas
+                        // Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        // startActivity(intent);
+                    });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Error de login: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+        });
     }
 }
-
-
-

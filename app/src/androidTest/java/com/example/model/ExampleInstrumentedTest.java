@@ -1,4 +1,4 @@
-package com.example.e2_t5_mob;
+package com.example.model;
 
 import android.content.Context;
 

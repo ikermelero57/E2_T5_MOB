@@ -1,16 +1,14 @@
-package com.example.e2_t5_mob;
+package com.example.model;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.e2_t5_mob.R;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -29,11 +31,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
 }
 
 dependencies {
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+
+    implementation ("org.hibernate:hibernate-core:5.4.30.Final")  // Versión de Hibernate, usa la última compatible con tu servidor
+    implementation ("javax.persistence:javax.persistence-api:2.2")  // Para la parte de JPA, si usas alguna
+    implementation ("org.hibernate:hibernate-entitymanager:5.4.30.Final") // Si necesitas la parte de EntityManage
 
     implementation(libs.appcompat)
     implementation(libs.material)

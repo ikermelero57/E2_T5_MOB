@@ -16,16 +16,16 @@
         android:theme="@style/Theme.AppName"
         tools:targetApi="31">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.example.model.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".IkasleActivity"/>
-        <activity android:name=".IrakasleActivity"/>
+        <activity android:name="com.example.model.MainActivity" />
+        <activity android:name="com.example.model.IkasleActivity"/>
+        <activity android:name="com.example.model.IrakasleActivity"/>
     </application>
 
 </manifest>
