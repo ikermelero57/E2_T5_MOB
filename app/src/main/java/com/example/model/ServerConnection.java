@@ -38,7 +38,6 @@ public class ServerConnection {
 
                 if (loginCredentialsOk) {
                     try {
-                        Log.e("nirelog", "aaa");
 
                         // Deserializar el objeto 'Users'
                         Users registeredUser = (Users) dis.readObject();

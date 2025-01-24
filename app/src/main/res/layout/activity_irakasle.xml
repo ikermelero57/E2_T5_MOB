@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
-    tools:context=".IrakasleActivity">
+    tools:context="com.example.model.IrakasleActivity">
 
     <!-- Toolbar -->
     <include layout="@layout/toolbar" />
@@ -18,7 +18,7 @@
         android:id="@+id/irakasle_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="120dp"
         android:text="@string/irakasle_title"
         android:textColor="#818589"
         android:textSize="34sp"
@@ -26,6 +26,19 @@
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Bienvenido, Profesor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
 
 

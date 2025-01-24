@@ -1,7 +1,9 @@
 package com.example.model;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.e2_t5_mob.R;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import model.Users;
@@ -36,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Mostrar el cuadro de diálogo de selección de idioma cada vez que se inicie la aplicación
         showLanguageSelectionDialog();
-
-
-
     }
 
     // Mostrar el cuadro de diálogo de selección de idioma
@@ -87,12 +88,6 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar el título del Toolbar con la cadena traducida
         getSupportActionBar().setTitle(getString(R.string.toolbar_title));
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         // Verificar la conexión a Internet y mostrar mensaje
         if (!NetworkUtils.isNetworkAvailable(this)) {
             Toast.makeText(this, "No hay conexión a Internet. Por favor, conecta tu dispositivo.", Toast.LENGTH_LONG).show();
@@ -109,15 +104,31 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // Llamada al método login
-            ServerConnection.login(email, password, new ServerConnection.ServerResponse<Users>() {
+            // Encriptar la contraseña antes de enviarla
+            String encryptedPassword = encryptPassword(password);
+
+            // Llamada al método login con la contraseña encriptada
+            ServerConnection.login(email, encryptedPassword, new ServerConnection.ServerResponse<Users>() {
                 @Override
                 public void onSuccess(Users users) {
                     runOnUiThread(() -> {
+                        // DEBUG: Verificar el valor de userType recibido
+                        Log.d("DEBUG", "userType recibido: " + users.getTipos().getId());
+
                         Toast.makeText(MainActivity.this, "Bienvenido, " + users.getNombre(), Toast.LENGTH_SHORT).show();
-                        // Aquí puedes iniciar una nueva actividad si lo deseas
-                        // Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        // startActivity(intent);
+
+                        // Redirigir a la actividad correspondiente según el tipo de usuario
+                        if (users.getTipos().getId() == 1 || users.getTipos().getId() == 2 || users.getTipos().getId() == 3) { // Profesor
+                            Intent intent = new Intent(MainActivity.this, IrakasleActivity.class);
+                            intent.putExtra("userData", users);
+                            startActivity(intent);
+                        } else if (users.getTipos().getId() == 4) { // Alumno
+                            Intent intent = new Intent(MainActivity.this, IkasleActivity.class);
+                            intent.putExtra("userData", users);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Usuario no autorizado.", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 }
 
@@ -130,4 +141,28 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
+
+    // Método para encriptar la contraseña usando SHA-1
+    private String encryptPassword(String password) {
+        String encryptedPassword = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] dataBytes = password.getBytes();
+            md.update(dataBytes);
+            byte[] hashBytes = md.digest();
+
+            // Convertir el array de bytes a un String hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                hexString.append(String.format("%02x", b));
+            }
+            encryptedPassword = hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return encryptedPassword;
+    }
 }
+
+
+//Ya consigo que dependiendo de quien se logea me dirija a la pantalla que quiero. Estoy en la pantalla de Irakasle ordutegia y quiero visualizar el horario de el profesor a traves de una tabla. El horario lo tengo que sacar del servidor y quiero que en la parte superior de la tabla salga los dias de la semana. Y en el lateral del 1 a las horas que tenga.

@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class Users implements Serializable {
     private static final long serialVersionUID = 7324357341566270684L;
@@ -16,15 +15,32 @@ public class Users implements Serializable {
     private String direccion;
     private Integer telefono1;
     private Integer telefono2;
-    private Set matriculacioneses;
-    private Set reunionesesForProfesorId;
-    private Set reunionesesForAlumnoId;
-    private Set horarioses;
+    private Tipos tipos;
 
-    public Users(int id, String email, String password) {
+    // Constructor principal
+    public Users(int id, String email, String password, Tipos tipos) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.tipos = tipos;
+
+    }
+
+    public Users(int id, Tipos tipos) {
+        this.id = id;
+        this.tipos = tipos;
+    }
+
+    // Constructor vacío para permitir flexibilidad
+    public Users() {
+    }
+
+    public Tipos getTipos() {
+        return this.tipos;
+    }
+
+    public void setTipos(Tipos tipos) {
+        this.tipos = tipos;
     }
 
     // Getters y setters
@@ -108,35 +124,5 @@ public class Users implements Serializable {
         this.telefono2 = telefono2;
     }
 
-    public Set getMatriculacioneses() {
-        return matriculacioneses;
-    }
 
-    public void setMatriculacioneses(Set matriculacioneses) {
-        this.matriculacioneses = matriculacioneses;
-    }
-
-    public Set getReunionesesForProfesorId() {
-        return reunionesesForProfesorId;
-    }
-
-    public void setReunionesesForProfesorId(Set reunionesesForProfesorId) {
-        this.reunionesesForProfesorId = reunionesesForProfesorId;
-    }
-
-    public Set getReunionesesForAlumnoId() {
-        return reunionesesForAlumnoId;
-    }
-
-    public void setReunionesesForAlumnoId(Set reunionesesForAlumnoId) {
-        this.reunionesesForAlumnoId = reunionesesForAlumnoId;
-    }
-
-    public Set getHorarioses() {
-        return horarioses;
-    }
-
-    public void setHorarioses(Set horarioses) {
-        this.horarioses = horarioses;
-    }
 }

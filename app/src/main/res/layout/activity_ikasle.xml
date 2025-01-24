@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
-    tools:context=".IkasleActivity">
+    tools:context="com.example.model.IkasleActivity">
 
     <!-- Toolbar -->
     <include layout="@layout/toolbar" />
@@ -23,6 +23,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:text="Bienvenido, Alumno"
+        tools:ignore="MissingConstraints" />
 
     <!-- Horario del Ikasle (Ejemplo) -->
 

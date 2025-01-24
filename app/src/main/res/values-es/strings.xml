@@ -8,4 +8,6 @@
     <string name="login_button">Iniciar sesión</string>
     <string name="irakasle_title">Horario de Profesor</string>
     <string name="ordutegia_title">Horario</string>
+    <string name="ikasle_title">Horario alumno</string>
+
 </resources>
