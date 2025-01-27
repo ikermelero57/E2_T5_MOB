@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
 
-        emailEditText.setText("1");
-        passwordEditText.setText("1234");
+//        emailEditText.setText("1");
+//        passwordEditText.setText("1234");
 
         // Actualizar el título del Toolbar con la cadena traducida
         getSupportActionBar().setTitle(getString(R.string.toolbar_title));
@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
             // Encriptar la contraseña antes de enviarla
             String encryptedPassword = encryptPassword(password);
+
+            // Depurar el hash generado
+            // Debug: Mostrar en el log lo que se está enviando
+            Log.d("DEBUG", "Email: " + email + ", Encrypted Password: " + encryptedPassword);
+
 
             // Llamada al método login con la contraseña encriptada
             ServerConnection.login(email, encryptedPassword, new ServerConnection.ServerResponse<Users>() {
@@ -142,25 +147,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Método para encriptar la contraseña usando SHA-1
+
     private String encryptPassword(String password) {
-        String encryptedPassword = "";
+        String resumenString = new String();
+        System.out.println(password);
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] dataBytes = password.getBytes();
+            byte dataBytes[] = password.getBytes();
             md.update(dataBytes);
-            byte[] hashBytes = md.digest();
-
-            // Convertir el array de bytes a un String hexadecimal
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                hexString.append(String.format("%02x", b));
-            }
-            encryptedPassword = hexString.toString();
+            byte resumen[] = md.digest();
+            resumenString = new String(resumen);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return encryptedPassword;
+        return resumenString;
     }
 }
 
