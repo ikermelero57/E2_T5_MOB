@@ -1,11 +1,10 @@
 package model;
 
+import java.io.Serializable;
 
-public class HorariosId implements java.io.Serializable {
-
+public class HorariosId implements Serializable {
 
     private static final long serialVersionUID = -8043428246151946896L;
-
 
     private String dia;
     private char hora;
@@ -54,6 +53,15 @@ public class HorariosId implements java.io.Serializable {
         this.profeId = profeId;
     }
 
+    // Sobrescribir el método toString para que la impresión de este objeto sea más legible
+    @Override
+    public String toString() {
+        return "Día: " + this.dia +
+                ", Hora: " + this.hora +
+                ", Módulo ID: " + this.moduloId +
+                ", Profesor ID: " + this.profeId;
+    }
+
     public boolean equals(Object other) {
         if ((this == other))
             return true;
@@ -78,5 +86,4 @@ public class HorariosId implements java.io.Serializable {
         result = 37 * result + this.getProfeId();
         return result;
     }
-
 }

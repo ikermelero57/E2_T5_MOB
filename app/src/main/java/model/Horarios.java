@@ -1,10 +1,8 @@
 package model;
 
+import java.io.Serializable;
 
-
-
-public class Horarios implements java.io.Serializable {
-
+public class Horarios implements Serializable {
 
     private static final long serialVersionUID = 1258367426131934365L;
     private HorariosId id;
@@ -44,6 +42,12 @@ public class Horarios implements java.io.Serializable {
         this.modulos = modulos;
     }
 
-
-
+    // Sobrescribir el método toString para que la impresión de este objeto sea más legible
+    @Override
+    public String toString() {
+        return "Dia: " + this.id.getDia() +
+                ", Hora: " + this.id.getHora() +
+                ", Módulo ID: " + this.id.getModuloId() +
+                ", Profesor ID: " + this.id.getProfeId();
+    }
 }

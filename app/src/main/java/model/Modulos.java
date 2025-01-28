@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 
-public class Modulos implements java.io.Serializable {
+public class Modulos implements Serializable {
 
 
 
@@ -15,7 +16,7 @@ public class Modulos implements java.io.Serializable {
     private String nombreEus;
     private int horas;
     private Integer curso;
-    private Set horarioses = new HashSet(0);
+
 
     public Modulos() {
     }
@@ -32,7 +33,7 @@ public class Modulos implements java.io.Serializable {
         this.nombreEus = nombreEus;
         this.horas = horas;
         this.curso = curso;
-        this.horarioses = horarioses;
+
     }
 
     public int getId() {
@@ -83,12 +84,6 @@ public class Modulos implements java.io.Serializable {
         this.curso = curso;
     }
 
-    public Set getHorarioses() {
-        return this.horarioses;
-    }
 
-    public void setHorarioses(Set horarioses) {
-        this.horarioses = horarioses;
-    }
 
 }
