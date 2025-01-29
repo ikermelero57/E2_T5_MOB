@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Perfil: Aparece en el menú desplegable -->
+    <item
+        android:id="@+id/itemPerfil"
+        android:title="Perfil"
+        app:showAsAction="never" />
+
+    <!-- Ikasle Zerrenda: Aparece en el menú desplegable -->
+    <item
+        android:id="@+id/itemIkasleZerrenda"
+        android:title="Ikasle Zerrenda"
+        app:showAsAction="never" />
+
+    <!-- Irten (Cerrar sesión): Aparece en el menú desplegable -->
+    <item
+        android:id="@+id/itemSalir"
+        android:title="Irten"
+        app:showAsAction="never" />
+
+    <!-- Tres puntos (overflow): Solo debería estar aquí
+    <item
+        android:id="@+id/itemMenu"
+        android:title="Menú"
+        android:icon="@drawable/ic_three_points_white"
+        app:showAsAction="always" />-->
+</menu>

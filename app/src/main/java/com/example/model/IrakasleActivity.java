@@ -1,105 +1,114 @@
 package com.example.model;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.example.e2_t5_mob.R;
-
 import model.Horarios;
 import model.Users;
-
+import android.content.Intent;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IrakasleActivity extends AppCompatActivity {
 
-    private TableLayout horarioTableLayout;
+    private TableLayout tablaLunes, tablaMartes, tablaMiercoles, tablaJueves, tablaViernes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_irakasle);
 
+        // Inicializar las tablas
+        tablaLunes = findViewById(R.id.tablaLunes);
+        tablaMartes = findViewById(R.id.tablaMartes);
+        tablaMiercoles = findViewById(R.id.tablaMiercoles);
+        tablaJueves = findViewById(R.id.tablaJueves);
+        tablaViernes = findViewById(R.id.tablaViernes);
+
+        // Configurar el Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Cambiar el ícono de los tres puntos a blanco
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_three_points_white)); // Asegúrate de tener este ícono en tu carpeta drawable
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.ordutegia_title);
         }
 
-        // Obtener los datos del usuario enviados desde MainActivity
+        // Obtener datos del usuario
         Users user = (Users) getIntent().getSerializableExtra("userData");
-
         TextView welcomeTextView = findViewById(R.id.textViewWelcome);
-        if (user != null) {
-            welcomeTextView.setText("Bienvenido, Profesor " + user.getNombre());
-        } else {
-            welcomeTextView.setText("Bienvenido, Profesor");
-        }
+        welcomeTextView.setText(user != null ? "Bienvenido, Profesor " + user.getNombre() : "Bienvenido, Profesor");
 
-        // Inicializa el TableLayout donde se mostrarán los horarios
-        horarioTableLayout = findViewById(R.id.horarioTableLayout);
-
-        // Obtener los horarios del servidor
+        // Obtener horarios
         String email = user != null ? user.getEmail() : "itziar@elorrieta-errekamari.com";
         getHorarios(email);
     }
 
-    // Método para obtener los horarios desde el servidor
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_irakasle, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Usamos if-else en lugar de switch para evitar el error "Constant expression required"
+        if (item.getItemId() == R.id.itemPerfil) {
+            startActivity(new Intent(this, ProfilaActivity.class));  // Redirigir a la actividad de perfil
+            return true;
+
+        } else if (item.getItemId() == R.id.itemIkasleZerrenda) {
+            startActivity(new Intent(this, IkaslezerrendaActivity.class));  // Redirigir a la actividad de Ikasle Zerrenda
+            return true;
+
+        } else if (item.getItemId() == R.id.itemSalir) {
+            Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();  // Mensaje de cierre de sesión
+            finish();  // Cierra la actividad actual
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void getHorarios(String email) {
         new Thread(() -> {
             try {
                 Log.d("DEBUG", "Intentando conectar al servidor...");
-
                 Socket socket = new Socket("10.5.104.21", 54321);
                 DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-                Log.d("DEBUG", "Conexión con el servidor establecida");
-
-
-                // Enviar solicitud de obtener horarios al servidor
                 outputStream.writeUTF("getHorarios");
                 outputStream.writeUTF(email);
                 outputStream.flush();
-                Log.d("DEBUG", "Solicitud enviada al servidor para el usuario: " + email);
 
-                Log.d("DEBUG", "Esperando la respuesta del servidor...");
-                Object response = null;
-                try {
-                    response = inputStream.readObject();  // Lee el objeto del flujo de entrada
-                } catch (IOException e) {
-                    Log.e("ERROR", "Error de entrada/salida", e);
-                } catch (ClassNotFoundException e) {
-                    Log.e("ERROR", "Error al deserializar el objeto", e);
-                }
-
-                if (response != null) {
-                    Log.d("DEBUG", "Respuesta del servidor: " + response);
-                    Log.d("DEBUG", "Clase de la respuesta: " + response.getClass().getName());
-                } else {
-                    Log.d("DEBUG", "No se recibió ninguna respuesta.");
-                }
+                Object response = inputStream.readObject();
 
                 if (response instanceof ArrayList) {
                     ArrayList<Horarios> horariosList = (ArrayList<Horarios>) response;
-                    Log.d("DEBUG", "Horarios recibidos: " + horariosList.size());
-
                     runOnUiThread(() -> {
                         if (!horariosList.isEmpty()) {
-                            rellenarTabla(horariosList);
+                            rellenarTablas(horariosList);
                         } else {
-                            Toast.makeText(IrakasleActivity.this, "No se encontraron horarios", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "No se encontraron horarios", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -113,66 +122,97 @@ public class IrakasleActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void rellenarTabla(ArrayList<Horarios> horarios) {
-        horarioTableLayout.removeAllViews(); // Limpiar la tabla antes de llenarla
+    private void rellenarTablas(ArrayList<Horarios> horarios) {
+        HashMap<String, String> horarioMap = new HashMap<>();
 
-        // Crear la fila de los días de la semana (encabezado)
-        TableRow encabezadoRow = new TableRow(this);
-        String[] dias = {"Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
+        for (Horarios horario : horarios) {
+            int hora = Character.getNumericValue(horario.getId().getHora());
+            String diaNormalizado = horario.getId().getDia().split("/")[0];
 
-        for (String dia : dias) {
-            TextView diaTextView = new TextView(this);
-            diaTextView.setText(dia);
-            diaTextView.setPadding(16, 16, 16, 16);
-            diaTextView.setTextSize(16);
-            diaTextView.setBackgroundResource(R.drawable.table_header_background);
-            encabezadoRow.addView(diaTextView);
+            String clave = hora + "-" + diaNormalizado;
+            String asignatura = horario.getModulos().getNombre();
+            horarioMap.put(clave, asignatura);
+
+            Log.d("DEBUG", "Guardado en mapa -> " + clave + ": " + asignatura);
         }
-        horarioTableLayout.addView(encabezadoRow);
 
-        // Crear las filas para las horas del 1 al 6
-        for (int bloque = 1; bloque <= 6; bloque++) {
-            TableRow row = new TableRow(this);
+        // Crear las filas para los días de la semana
+        crearTablaDia(tablaLunes, horarioMap, "L");
+        crearTablaDia(tablaMartes, horarioMap, "M");
+        crearTablaDia(tablaMiercoles, horarioMap, "X");
+        crearTablaDia(tablaJueves, horarioMap, "J");
+        crearTablaDia(tablaViernes, horarioMap, "V");
+    }
 
-            // Mostrar el número del bloque en la primera columna
-            TextView bloqueTextView = new TextView(this);
-            bloqueTextView.setText(String.valueOf(bloque)); // Solo muestra el número
-            bloqueTextView.setPadding(16, 16, 16, 16);
-            row.addView(bloqueTextView);
+    private void crearTablaDia(TableLayout tableLayout, HashMap<String, String> horarioMap, String dia) {
+        // Crear encabezado con la hora y el día
+        TableRow encabezadoRow = new TableRow(this);
+        String[] dias = {"Hora", dia};
 
-            // Añadir columnas para cada día de la semana
-            for (int i = 1; i < dias.length; i++) {
-                TextView asignaturaTextView = new TextView(this);
+        for (String item : dias) {
+            TextView textView = new TextView(this);
+            textView.setText(item);
+            textView.setPadding(16, 16, 16, 16);
+            textView.setTextSize(16);
+            textView.setGravity(Gravity.CENTER);
+            textView.setBackgroundColor(Color.parseColor("#f0f0f0"));
 
-                // Buscar la asignatura para el día y el bloque actual
-                String diaActual = dias[i];
-                String asignatura = "";
-
-                for (Horarios horario : horarios) {
-
-                    Log.d("Syso", horario.getModulos().getNombre());
-                    asignatura = horario.getModulos().getNombre();
-                    // Si coinciden el día y el bloque, obtenemos la asignatura
-//                    if (horario.getId().getHora() == bloque && horario.getId().getDia().equals(diaActual)) {
-//                        asignatura = horario.getModulos().getNombre();
-//
-//                        break;
-//                    }
-                }
-
-                // Si no se encuentra asignatura, asigna un texto por defecto
-                if (asignatura.isEmpty()) {
-                    asignatura = "Sin asignatura";
-                }
-
-                Log.d("DEBUG", "Bloque: " + bloque + ", Día: " + diaActual + ", Asignatura: " + asignatura); // Verificación adicional
-
-                asignaturaTextView.setText(asignatura);
-                asignaturaTextView.setPadding(16, 16, 16, 16);
-                row.addView(asignaturaTextView);
+            TableRow.LayoutParams layoutParams;
+            if (item.equals("Hora")) {
+                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            } else {
+                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f);
             }
 
-            horarioTableLayout.addView(row);
+            textView.setLayoutParams(layoutParams);
+
+            if (item.equals("Hora") || item.equals(dia)) {
+                textView.setBackgroundResource(R.drawable.gradient_background); // Fondo con gradiente
+            }
+
+            setCellBorder(textView);
+            encabezadoRow.addView(textView);
         }
+        tableLayout.addView(encabezadoRow);
+
+        for (int bloque = 1; bloque <= 5; bloque++) {
+            TableRow row = new TableRow(this);
+
+            TextView bloqueTextView = new TextView(this);
+            bloqueTextView.setText(String.valueOf(bloque));
+            bloqueTextView.setPadding(16, 16, 16, 16);
+            bloqueTextView.setGravity(Gravity.CENTER);
+            TableRow.LayoutParams horaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            bloqueTextView.setLayoutParams(horaParams);
+
+            bloqueTextView.setBackgroundColor(Color.WHITE);
+            setCellBorder(bloqueTextView);
+
+            row.addView(bloqueTextView);
+
+            String clave = bloque + "-" + dia;
+            String asignatura = horarioMap.getOrDefault(clave, "");
+
+            TextView asignaturaTextView = new TextView(this);
+            asignaturaTextView.setText(asignatura);
+            asignaturaTextView.setPadding(16, 16, 16, 16);
+            asignaturaTextView.setGravity(Gravity.CENTER);
+            TableRow.LayoutParams asignaturaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f);
+            asignaturaTextView.setLayoutParams(asignaturaParams);
+
+            asignaturaTextView.setBackgroundColor(Color.WHITE);
+            setCellBorder(asignaturaTextView);
+
+            row.addView(asignaturaTextView);
+
+            tableLayout.addView(row);
+        }
+    }
+
+    private void setCellBorder(TextView textView) {
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(Color.LTGRAY);
+        border.setStroke(2, Color.parseColor("#d4dcdf"));
+        textView.setBackground(border);
     }
 }
