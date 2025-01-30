@@ -1,0 +1,126 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo"
+    tools:context="com.example.model.ProfilaActivity">
+
+    <!-- Toolbar -->
+    <include layout="@layout/toolbar" />
+
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/profila_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/profila_title"
+        android:textColor="#818589"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewWelcome" />
+
+    <!-- Mensaje de bienvenida -->
+    <TextView
+        android:id="@+id/textViewWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Perfil del Profesor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <!-- ScrollView para hacer scroll -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/profila_title"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- LinearLayout para contener los datos del perfil, centrado -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/textViewNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+            <!-- Apellido -->
+            <TextView
+                android:id="@+id/textViewApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apellido:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+            <!-- DNI -->
+            <TextView
+                android:id="@+id/textViewDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DNI:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+            <!-- Teléfono -->
+            <TextView
+                android:id="@+id/textViewTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+            <!-- Dirección -->
+            <TextView
+                android:id="@+id/textViewDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección:"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="@drawable/cell_border" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

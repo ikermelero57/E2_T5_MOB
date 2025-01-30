@@ -7,7 +7,14 @@
     <string name="password">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="irakasle_title">Horario de Profesor</string>
+
+    <!-- Irakasle -->
     <string name="ordutegia_title">Horario</string>
     <string name="ikasle_title">Horario alumno</string>
+
+    <!-- Perfil -->
+    <string name="irakasle_option">Irakasle</string>
+    <string name="salir_option">Salir</string>
+    <string name="profila_title">Profila</string>
 
 </resources>

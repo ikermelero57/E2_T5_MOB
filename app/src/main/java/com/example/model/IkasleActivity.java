@@ -53,30 +53,36 @@ public class IkasleActivity extends AppCompatActivity {
         welcomeTextView.setText("Bienvenido, " + user.getNombre());
 
         // Obtener el horario del servidor
-        obtenerHorario(user.getEmail());
+        getHorarios(user.getEmail());
     }
 
     // Método para obtener el horario del servidor
-    private void obtenerHorario(String email) {
+    private void getHorarios(String email) {
         new Thread(() -> {
             try {
+                // Log para indicar que la conexión se está intentando
                 Log.d("DEBUG", "Intentando conectar al servidor...");
                 Socket socket = new Socket("10.5.104.21", 54321);
                 DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-                outputStream.writeUTF("getHorarios");
+                // Cambiar la llamada para utilizar el nuevo método getHorariosByStudent
+                outputStream.writeUTF("getHorariosByStudent");  // Aquí usas "getHorariosByStudent" ahora
                 outputStream.writeUTF(email);
                 outputStream.flush();
 
+                // Leer la respuesta del servidor
                 Object response = inputStream.readObject();
 
+                // Verificar si la respuesta es un ArrayList de horarios
                 if (response instanceof ArrayList) {
                     ArrayList<Horarios> horariosList = (ArrayList<Horarios>) response;
                     runOnUiThread(() -> {
+                        // Si se encuentran horarios, llenar las tablas
                         if (!horariosList.isEmpty()) {
                             rellenarTablas(horariosList);
                         } else {
+                            // Si no se encuentran horarios, mostrar un mensaje
                             Toast.makeText(this, "No se encontraron horarios", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -84,12 +90,16 @@ public class IkasleActivity extends AppCompatActivity {
                     Log.e("ERROR", "La respuesta del servidor no es un ArrayList de Horarios");
                 }
 
+                // Cerrar la conexión con el servidor
                 socket.close();
+
             } catch (Exception e) {
+                // Manejo de errores y mostrar mensaje de error
                 Log.e("ERROR", "Error al conectar con el servidor", e);
             }
         }).start();
     }
+
 
     // Método para rellenar las tablas con el horario del alumno
     private void rellenarTablas(ArrayList<Horarios> horarios) {

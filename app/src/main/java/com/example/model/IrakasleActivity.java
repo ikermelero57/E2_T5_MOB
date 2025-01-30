@@ -69,9 +69,18 @@ public class IrakasleActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Usamos if-else en lugar de switch para evitar el error "Constant expression required"
         if (item.getItemId() == R.id.itemPerfil) {
-            startActivity(new Intent(this, ProfilaActivity.class));  // Redirigir a la actividad de perfil
+            Users user = (Users) getIntent().getSerializableExtra("userData");
+
+            if (user != null) {
+                Log.d("DEBUG", "Usuario encontrado: " + user.getNombre());  //  LOG PARA DEPURAR
+                Intent intent = new Intent(this, ProfilaActivity.class);
+                intent.putExtra("userData", user);
+                startActivity(intent);
+            } else {
+                Log.e("ERROR", "Usuario es NULL. No se puede abrir el perfil.");
+                Toast.makeText(this, "Error: Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            }
             return true;
 
         } else if (item.getItemId() == R.id.itemIkasleZerrenda) {

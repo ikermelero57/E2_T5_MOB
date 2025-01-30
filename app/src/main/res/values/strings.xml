@@ -6,7 +6,16 @@
     <string name="password">Pasahitza</string>
     <string name="login_button">Saioa hasi</string>
     <string name="irakasle_title">Irakasle Ordutegia</string>
+
+    <!-- Irakaslea -->
     <string name="ordutegia_title">Ordutegia</string>
     <string name="ikasle_title">Ikasle Ordutegia</string>
+
+    <!-- Profila -->
+    <string name="profila_title">Profila</string>
+    <string name="irakasle_option">Irakasle</string>
+    <string name="salir_option">Irten</string>
+
+
 
 </resources>
