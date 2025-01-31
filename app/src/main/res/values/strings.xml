@@ -16,6 +16,8 @@
     <string name="irakasle_option">Irakasle</string>
     <string name="salir_option">Irten</string>
 
-
+    <!-- Profila ikasle -->
+    <string name="profila_ikasle">Profila</string>
+    <string name="ikasle_bilerak">Irakasle Ordutegia</string>
 
 </resources>

@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Opción PERFIL -->
+    <item
+        android:id="@+id/itemPerfil"
+        android:title="@string/profila_ikasle"
+        app:showAsAction="never" />
+
+    <!-- Opción IRAKASLE ORDUTEGIA -->
+    <item
+        android:id="@+id/itemBilerak"
+        android:title="@string/ikasle_bilerak"
+        app:showAsAction="never" />
+
+</menu>

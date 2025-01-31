@@ -17,4 +17,8 @@
     <string name="salir_option">Salir</string>
     <string name="profila_title">Profila</string>
 
+    <!-- Profila ikasle -->
+    <string name="profila_ikasle">Perfil</string>
+    <string name="ikasle_bilerak">Horario Profesor</string>
+
 </resources>

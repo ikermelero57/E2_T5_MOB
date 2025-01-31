@@ -1,10 +1,14 @@
 package com.example.model;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,8 +43,13 @@ public class IkasleActivity extends AppCompatActivity {
         tablaJueves = findViewById(R.id.tablaJueves);
         tablaViernes = findViewById(R.id.tablaViernes);
 
+        // Configurar el Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Cambiar el ícono de los tres puntos a blanco (opcional)
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_three_points_white)); // Asegúrate de tener este ícono en tu carpeta drawable
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.ikasle_title);
         }
@@ -55,6 +64,48 @@ public class IkasleActivity extends AppCompatActivity {
         // Obtener el horario del servidor
         getHorarios(user.getEmail());
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ikasle, menu); // Inflar el menú
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Obtener el usuario actual
+        Users user = (Users) getIntent().getSerializableExtra("userData");
+
+        // Manejar las opciones del menú
+        if (item.getItemId() == R.id.itemPerfil) {
+            // Redirigir a ProfilaActivityIkasle
+            if (user != null) {
+                Intent intent = new Intent(this, ProfilaIkasleActivity.class);
+                intent.putExtra("userData", user);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Error: Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+
+        } else if (item.getItemId() == R.id.itemBilerak) {
+            // Redirigir a BilerakActivity en lugar de IrakasleActivity
+            if (user != null) {
+                Intent intent = new Intent(this, BilerakActivity.class);  // Cambiar aquí IrakasleActivity por BilerakActivity
+                intent.putExtra("userData", user);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Error: Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
 
     // Método para obtener el horario del servidor
     private void getHorarios(String email) {
@@ -134,8 +185,8 @@ public class IkasleActivity extends AppCompatActivity {
         for (String item : dias) {
             TextView textView = new TextView(this);
             textView.setText(item);
-            textView.setPadding(16, 16, 16, 16);
-            textView.setTextSize(16);
+            textView.setPadding(8, 8, 8, 8); // Padding reducido
+            textView.setTextSize(12); // Tamaño de texto más pequeño
             textView.setGravity(Gravity.CENTER);  // Centrar texto horizontal y verticalmente
             textView.setBackgroundColor(Color.parseColor("#f0f0f0")); // Fondo color claro para la cabecera
 
@@ -143,9 +194,11 @@ public class IkasleActivity extends AppCompatActivity {
             TableRow.LayoutParams layoutParams;
 
             if (item.equals("Hora")) {
-                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);  // Columna "Hora" más estrecha
+                // Columna "Hora" más estrecha (20% del ancho disponible)
+                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             } else {
-                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f);  // Columna "Asignatura" más ancha
+                // Columna "Asignatura" más ancha (80% del ancho disponible)
+                layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.8f);
             }
 
             textView.setLayoutParams(layoutParams);
@@ -157,17 +210,20 @@ public class IkasleActivity extends AppCompatActivity {
         }
         tableLayout.addView(encabezadoRow);
 
-        // Crear las filas para las horas (1 al 6)
+        // Crear las filas para las horas (1 al 5)
         for (int bloque = 1; bloque <= 5; bloque++) {
             TableRow row = new TableRow(this);
 
             // Primera columna con el número de bloque (hora)
             TextView bloqueTextView = new TextView(this);
             bloqueTextView.setText(String.valueOf(bloque));
-            bloqueTextView.setPadding(16, 16, 16, 16);
+            bloqueTextView.setPadding(8, 8, 8, 8); // Padding reducido
+            bloqueTextView.setTextSize(12); // Tamaño de texto más pequeño
             bloqueTextView.setGravity(Gravity.CENTER);  // Centrar el número de la hora
-            TableRow.LayoutParams horaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);  // Columna de horas estrecha
-            bloqueTextView.setLayoutParams(horaParams);  // Añadir ancho flexible
+
+            // Columna "Hora" más estrecha (20% del ancho disponible)
+            TableRow.LayoutParams horaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+            bloqueTextView.setLayoutParams(horaParams);
 
             // No aplicar gradiente al fondo de la hora
             bloqueTextView.setBackgroundColor(Color.WHITE); // Fondo blanco para la celda de hora
@@ -183,10 +239,15 @@ public class IkasleActivity extends AppCompatActivity {
 
             TextView asignaturaTextView = new TextView(this);
             asignaturaTextView.setText(asignatura);
-            asignaturaTextView.setPadding(16, 16, 16, 16);
+            asignaturaTextView.setPadding(8, 8, 8, 8); // Padding reducido
+            asignaturaTextView.setTextSize(12); // Tamaño de texto más pequeño
             asignaturaTextView.setGravity(Gravity.CENTER);  // Centrar la asignatura
-            TableRow.LayoutParams asignaturaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f);  // Columna de asignaturas más ancha
-            asignaturaTextView.setLayoutParams(asignaturaParams);  // Añadir ancho flexible
+            asignaturaTextView.setSingleLine(true); // Evitar que el texto ocupe más de una línea
+            asignaturaTextView.setEllipsize(TextUtils.TruncateAt.END); // Mostrar "..." si el texto es demasiado largo
+
+            // Columna "Asignatura" más ancha (80% del ancho disponible)
+            TableRow.LayoutParams asignaturaParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.8f);
+            asignaturaTextView.setLayoutParams(asignaturaParams);
 
             // No aplicar gradiente a las asignaturas
             asignaturaTextView.setBackgroundColor(Color.WHITE); // Fondo blanco para las celdas de asignaturas

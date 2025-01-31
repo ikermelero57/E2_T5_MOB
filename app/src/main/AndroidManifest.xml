@@ -27,5 +27,6 @@
         <activity android:name="com.example.model.IkasleActivity"/>
         <activity android:name="com.example.model.IrakasleActivity"/>
         <activity android:name="com.example.model.ProfilaActivity"/>
+        <activity android:name="com.example.model.ProfilaIkasleActivity"/>
     </application>
 </manifest>

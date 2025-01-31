@@ -89,7 +89,7 @@ public class ProfilaActivity extends AppCompatActivity {
 
         } else if (itemId == R.id.itemIrten) {
             Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
-            finish(); // Finaliza la actividad actual
+            cerrarSesion();
             return true;
 
         } else {
@@ -97,5 +97,23 @@ public class ProfilaActivity extends AppCompatActivity {
         }
     }
 
+
+//Método para cerrar la sesión y redirigir al login.
+
+    private void cerrarSesion() {
+        // Eliminar datos de sesión (si usas SharedPreferences)
+        SharedPreferences preferences = getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear(); // Borra todos los datos guardados
+        editor.apply();
+
+        // Mostrar mensaje de cierre de sesión
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+
+        // Ir a la pantalla de Login y eliminar historial de actividades anteriores
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Evita volver atrás
+        startActivity(intent);
+    }
 
 }
