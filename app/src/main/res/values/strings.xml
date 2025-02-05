@@ -1,4 +1,12 @@
 <resources>
+    <string name="complete_fields">Mesedez, bete eremu guztiak.</string>
+    <string name="login_error">Saio-hasteko errorea:</string>
+    <string name="welcome">Ongi etorri,</string>
+    <string name="enter_email">Sartu zure emaila pasahitza berreskuratzeko</string>
+    <string name="password_sent">Pasahitza aldatzeko mezu bat bidali da.</string>
+    <string name="language_selection">Hizkuntza aukeratu</string>
+    <string name="error">Errorea</string>
+
     <string name="app_name">E2_T5_MOB</string>
     <string name="toolbar_title">Saioa hasi</string>
     <string name="login_title">Saioa hasi</string>
@@ -18,6 +26,10 @@
 
     <!-- Profila ikasle -->
     <string name="profila_ikasle">Profila</string>
-    <string name="ikasle_bilerak">Irakasle Ordutegia</string>
+    <string name="ikasle_bilerak">Ikasle Bilerak</string>
+
+    <!-- Bilerak -->
+    <string name="bilerak_title">Bilerak</string>
+
 
 </resources>

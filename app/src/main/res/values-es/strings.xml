@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="complete_fields">Por favor, completa todos los campos.</string>
+    <string name="login_error">Error de login:</string>
+    <string name="welcome">Bienvenido,</string>
+    <string name="enter_email">Introduce tu email para recuperar la contraseña</string>
+    <string name="password_sent">Se ha enviado un correo para cambiar la contraseña.</string>
+    <string name="language_selection">Seleccionar idioma</string>
+    <string name="error">Error</string>
+
     <string name="toolbar_title">Iniciar sesión</string>
     <string name="app_name">E2_T5_MOB</string>
     <string name="login_title">Iniciar sesión</string>
@@ -19,6 +27,9 @@
 
     <!-- Profila ikasle -->
     <string name="profila_ikasle">Perfil</string>
-    <string name="ikasle_bilerak">Horario Profesor</string>
+    <string name="ikasle_bilerak">Reuniones alumno</string>
+
+    <!-- Bilerak -->
+    <string name="bilerak_title">Reuniones</string>
 
 </resources>

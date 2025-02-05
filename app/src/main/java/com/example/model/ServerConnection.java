@@ -1,13 +1,11 @@
 package com.example.model;
 
 import android.util.Log;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import model.Users;
 
 public class ServerConnection {
@@ -32,34 +30,54 @@ public class ServerConnection {
                 dos.writeUTF("login");
                 dos.writeUTF(email);
                 dos.writeUTF(password);
+                dos.flush();
 
                 // Leer respuesta del servidor
-                Boolean loginCredentialsOk = dis.readBoolean();
+                boolean loginCredentialsOk = dis.readBoolean();
 
                 if (loginCredentialsOk) {
                     try {
-
                         // Deserializar el objeto 'Users'
                         Users registeredUser = (Users) dis.readObject();
                         callback.onSuccess(registeredUser);
-
                     } catch (ClassNotFoundException e) {
                         Log.e("nirelog", e.getMessage());
-                        // Error de deserialización: se captura la excepción
                         callback.onError(new Exception("Error de deserialización: " + e.getMessage()));
                     }
                 } else {
-                    // Si las credenciales son incorrectas
                     callback.onError(new Exception("Credenciales inválidas."));
                 }
 
             } catch (UnknownHostException e) {
-                // Error de conexión: host desconocido
                 callback.onError(new Exception("Host desconocido: " + e.getMessage()));
             } catch (IOException e) {
-                // Error de conexión general
                 callback.onError(new Exception("Error de conexión: " + e.getMessage()));
             }
         }).start();
     }
+
+    public static void requestPasswordReset(String email, ServerResponse<String> callback) {
+        new Thread(() -> {
+            try (Socket client = new Socket(HOST, PORT);
+                 DataOutputStream dos = new DataOutputStream(client.getOutputStream());
+                 ObjectInputStream dis = new ObjectInputStream(client.getInputStream())) {
+
+                dos.writeUTF("pasahitzaAldatu");
+                dos.writeUTF(email);
+                dos.flush();
+
+                String response = dis.readUTF();
+
+                if ("OK".equals(response)) {
+                    callback.onSuccess("Contraseña enviada");
+                } else {
+                    callback.onError(new Exception("Error en el servidor"));
+                }
+
+            } catch (IOException e) {
+                callback.onError(new Exception("Error de conexión: " + e.getMessage()));
+            }
+        }).start();
+    }
+
 }

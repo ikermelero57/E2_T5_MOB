@@ -84,7 +84,14 @@ public class IrakasleActivity extends AppCompatActivity {
             return true;
 
         } else if (item.getItemId() == R.id.itemIkasleZerrenda) {
-            startActivity(new Intent(this, IkaslezerrendaActivity.class));  // Redirigir a la actividad de Ikasle Zerrenda
+            Users user = (Users) getIntent().getSerializableExtra("userData");
+            if (user != null) {
+                Intent intent = new Intent(this, IkaslezerrendaActivity.class);
+                intent.putExtra("userEmail", user.getEmail());  // Pasar el correo electrónico del profesor
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Error: Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            }
             return true;
 
         } else if (item.getItemId() == R.id.itemSalir) {

@@ -89,7 +89,7 @@ public class IkasleActivity extends AppCompatActivity {
             return true;
 
         } else if (item.getItemId() == R.id.itemBilerak) {
-            // Redirigir a BilerakActivity en lugar de IrakasleActivity
+            // Redirigir a BilerakActivity
             if (user != null) {
                 Intent intent = new Intent(this, BilerakActivity.class);  // Cambiar aquí IrakasleActivity por BilerakActivity
                 intent.putExtra("userData", user);
