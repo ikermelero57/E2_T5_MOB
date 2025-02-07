@@ -30,5 +30,6 @@
         <activity android:name="com.example.model.ProfilaIkasleActivity"/>
         <activity android:name="com.example.model.BilerakActivity"/>
         <activity android:name="com.example.model.IkaslezerrendaActivity"/>
+
     </application>
 </manifest>
